@@ -1,9 +1,9 @@
 "use client";
 
-import { Book } from "@/lib/data";
+import { IBook } from "@/core/domain/book";
 import { useState } from "react";
 
-export default function BookCard({ book }: { book: Book }) {
+export default function BookCard({ book }: { book: IBook }) {
   const [available, setAvailable] = useState(book.available);
 
   const handleBorrow = () => {
