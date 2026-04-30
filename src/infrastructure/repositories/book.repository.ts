@@ -13,13 +13,13 @@ export class BookRepository implements IBookRepository {
     return response.data;
   }
   async borrowBook(bookId: string): Promise<ApiResponse<IBook>> {
-    const response = await http.post<ApiResponse<IBook>>(
+    const response = await http.put<ApiResponse<IBook>>(
       `/books/${bookId}/borrow`,
     );
     return response.data;
   }
   async returnBook(bookId: string): Promise<ApiResponse<IBook>> {
-    const response = await http.post<ApiResponse<IBook>>(
+    const response = await http.put<ApiResponse<IBook>>(
       `/books/${bookId}/return`,
     );
     return response.data;
