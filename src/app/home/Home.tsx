@@ -23,10 +23,28 @@ export default function Home({ books }: { books: IBook[] }) {
     }
   };
 
+  const handleReturn = async (bookId: string) => {
+    setLocalBooks((prev) =>
+      prev.map((b) => (b.id === bookId ? { ...b, available: true } : b)),
+    );
+
+    try {
+      await bookService.returnBook(bookId);
+      router.refresh();
+    } catch {
+      setLocalBooks(books);
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
       {localBooks.map((book) => (
-        <BookCard key={book.id} book={book} handleBorrow={handleBorrow} />
+        <BookCard
+          key={book.id}
+          book={book}
+          handleBorrow={handleBorrow}
+          handleReturn={handleReturn}
+        />
       ))}
     </div>
   );
