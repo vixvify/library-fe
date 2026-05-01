@@ -11,7 +11,6 @@ export default function AdminPage() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<ICreateBook>({
     defaultValues: {

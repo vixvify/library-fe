@@ -5,27 +5,32 @@ import { ICreateBook, IBook } from "@/core/domain/book";
 
 export class BookRepository implements IBookRepository {
   async getAllBooks(): Promise<ApiResponse<IBook[]>> {
-    const response = await http.get<ApiResponse<IBook[]>>("/books");
+    const response = await http.get<ApiResponse<IBook[]>>("/api/library/books");
     return response.data;
   }
   async createBook(book: ICreateBook): Promise<ApiResponse<IBook>> {
-    const response = await http.post<ApiResponse<IBook>>("/books", book);
+    const response = await http.post<ApiResponse<IBook>>(
+      "/api/library/books",
+      book,
+    );
     return response.data;
   }
   async borrowBook(bookId: string): Promise<ApiResponse<IBook>> {
     const response = await http.put<ApiResponse<IBook>>(
-      `/books/${bookId}/borrow`,
+      `/api/library/books/borrow/${bookId}`,
     );
     return response.data;
   }
   async returnBook(bookId: string): Promise<ApiResponse<IBook>> {
     const response = await http.put<ApiResponse<IBook>>(
-      `/books/${bookId}/return`,
+      `/api/library/books/return/${bookId}`,
     );
     return response.data;
   }
   async deleteBook(bookId: string): Promise<ApiResponse<void>> {
-    const response = await http.delete<ApiResponse<void>>(`/books/${bookId}`);
+    const response = await http.delete<ApiResponse<void>>(
+      `/api/library/books/${bookId}`,
+    );
     return response.data;
   }
 }

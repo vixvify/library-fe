@@ -1,8 +1,10 @@
-import BookCard from "@/components/BookCard";
-import { books } from "@/lib/data";
 import Link from "next/link";
+import { bookService } from "@/infrastructure/container";
+import Home from "./home/Home";
 
-export default function HomePage() {
+export default async function Page() {
+  const books = await bookService.getAllBooks();
+
   return (
     <main className="min-h-screen bg-[#0b0b0c] text-white">
       <div className="mx-auto max-w-6xl px-6 py-16">
@@ -21,22 +23,14 @@ export default function HomePage() {
 
             <Link
               href="/admin"
-              className="
-        px-4 py-1.5 rounded-full
-        bg-white text-black text-sm font-medium
-        hover:bg-gray-200 transition
-      "
+              className="px-4 py-1.5 rounded-full bg-white text-black text-sm font-medium hover:bg-gray-200 transition"
             >
               Admin
             </Link>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
-          {books.map((book) => (
-            <BookCard key={book.id} book={book} />
-          ))}
-        </div>
+        <Home books={books} />
       </div>
     </main>
   );

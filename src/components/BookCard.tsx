@@ -1,13 +1,24 @@
 "use client";
 
-import { IBook } from "@/core/domain/book";
 import { useState } from "react";
+import { IBook } from "@/core/domain/book";
 
-export default function BookCard({ book }: { book: IBook }) {
-  const [available, setAvailable] = useState(book.available);
+export default function BookCard({
+  book,
+  handleBorrow,
+}: {
+  book: IBook;
+  handleBorrow: (bookId: string) => Promise<void>;
+}) {
+  const [loading, setLoading] = useState(false);
 
-  const handleBorrow = () => {
-    setAvailable(false);
+  const onBorrow = async () => {
+    try {
+      setLoading(true);
+      await handleBorrow(book.id);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -29,12 +40,12 @@ export default function BookCard({ book }: { book: IBook }) {
 
         <span
           className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-            available
+            book.available
               ? "bg-emerald-500/10 text-emerald-400"
               : "bg-white/10 text-gray-500"
           }`}
         >
-          {available ? "Available" : "Borrowed"}
+          {book.available ? "Available" : "Borrowed"}
         </span>
       </div>
 
@@ -45,18 +56,22 @@ export default function BookCard({ book }: { book: IBook }) {
       <div className="my-6 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
 
       <button
-        onClick={handleBorrow}
-        disabled={!available}
+        onClick={onBorrow}
+        disabled={!book.available || loading}
         className={`
-          w-full rounded-xl py-2.5 text-sm font-medium cursor-pointer transition-all
+          w-full rounded-xl py-2.5 text-sm font-medium transition-all cursor-pointer
           ${
-            available
+            book.available && !loading
               ? "bg-white text-black hover:bg-gray-200"
               : "bg-white/10 text-gray-500 cursor-not-allowed"
           }
         `}
       >
-        {available ? "Borrow Book" : "Not Available"}
+        {loading
+          ? "Processing..."
+          : book.available
+            ? "Borrow Book"
+            : "Not Available"}
       </button>
     </div>
   );
