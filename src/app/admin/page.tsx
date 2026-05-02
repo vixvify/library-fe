@@ -12,9 +12,9 @@ import { IBook, ICreateBook } from "@/core/domain/book";
 import { bookService } from "@/infrastructure/container";
 import { handleError } from "@/lib/error-handler";
 
-function isBook(book: IBook | null | undefined): book is IBook {
+const isBook = (book: IBook | null | undefined): book is IBook => {
   return Boolean(book && book.id && book.title && book.type);
-}
+};
 
 export default function AdminPage() {
   const router = useRouter();
